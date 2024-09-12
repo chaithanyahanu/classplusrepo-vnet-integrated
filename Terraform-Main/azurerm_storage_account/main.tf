@@ -29,12 +29,13 @@ data "azurerm_subnet" "existing_subnet" {
   resource_group_name  = data.azurerm_resource_group.existing_rg.name
 }
 
-# Resource to add Service Endpoints to an existing subnet
-resource "azurerm_subnet_network_security_group_association" "nsg" {
-  subnet_id                 = data.azurerm_subnet.existing_subnet.id
-  network_security_group_id = azurerm_network_security_group.nsg.id
+# Modify the existing subnet to add the service endpoint for Microsoft.Storage
+resource "azurerm_subnet" "updated_subnet" {
+  name                 = data.azurerm_subnet.existing_subnet.name
+  virtual_network_name = data.azurerm_virtual_network.existing_vnet.name
+  resource_group_name  = data.azurerm_resource_group.existing_rg.name
 
-  # Adding service endpoint for Microsoft.Storage
+  # Add Microsoft.Storage service endpoint
   service_endpoints = ["Microsoft.Storage"]
 }
 
