@@ -1,12 +1,13 @@
 terraform {
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source  = "hashicorp/azurerm"
       version = "3.110.0"
     }
   }
-backend "azurerm" {}
+  backend "azurerm" {}
 }
+
 provider "azurerm" {
   features {}
 }
@@ -31,4 +32,7 @@ resource "azurerm_subnet" "subnet" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   name                 = each.value["name"]
   address_prefixes     = each.value["address_prefixes"]
+
+  # Enabling service endpoints for Microsoft.Storage
+  service_endpoints = ["Microsoft.Storage"]
 }
