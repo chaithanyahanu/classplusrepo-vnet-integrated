@@ -18,28 +18,17 @@ data "azurerm_resource_group" "existing_rg" {
 
 # Data block to reference an existing virtual network
 data "azurerm_virtual_network" "existing_vnet" {
-  name                = "Prod-vnet"  # Replace with your existing virtual network name
-  resource_group_name = data.azurerm_resource_group.existing_rg.name
-}
-
-# Data block to reference an existing subnet within the virtual network
-data "azurerm_subnet" "existing_subnet" {
-  name                 = "subnet_1"  # Replace with your existing subnet name
-  virtual_network_name = data.azurerm_virtual_network.existing_vnet.name
-  resource_group_name  = data.azurerm_resource_group.existing_rg.name
-}
-
-resource "azurerm_virtual_network" "existing_vnet" {
   name                = "Prod-vnet"  # Replace with your actual virtual network name
   resource_group_name = data.azurerm_resource_group.existing_rg.name
-  location            = data.azurerm_resource_group.existing_rg.location
 }
 
+# Resource block to modify the existing subnet and enable service endpoints
 resource "azurerm_subnet" "existing_subnet" {
   name                 = "subnet_1"  # Replace with your actual subnet name
-  virtual_network_name = azurerm_virtual_network.existing_vnet.name
+  virtual_network_name = data.azurerm_virtual_network.existing_vnet.name
   resource_group_name  = data.azurerm_resource_group.existing_rg.name
-
+  
+  # Adding service endpoint for Microsoft.Storage
   service_endpoints = ["Microsoft.Storage"]
 }
 
@@ -58,7 +47,7 @@ resource "azurerm_storage_account" "storage" {
   
   network_rules {
     default_action             = "Deny"  # Deny all by default
-    virtual_network_subnet_ids = [data.azurerm_subnet.existing_subnet.id]  # Allow access from the existing subnet
+    virtual_network_subnet_ids = [azurerm_subnet.existing_subnet.id]  # Allow access from the existing subnet
   }
 
   tags = data.azurerm_resource_group.existing_rg.tags
