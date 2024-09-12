@@ -29,6 +29,20 @@ data "azurerm_subnet" "existing_subnet" {
   resource_group_name  = data.azurerm_resource_group.existing_rg.name
 }
 
+resource "azurerm_virtual_network" "existing_vnet" {
+  name                = "Prod-vnet"  # Replace with your actual virtual network name
+  resource_group_name = data.azurerm_resource_group.existing_rg.name
+  location            = data.azurerm_resource_group.existing_rg.location
+}
+
+resource "azurerm_subnet" "existing_subnet" {
+  name                 = "subnet_1"  # Replace with your actual subnet name
+  virtual_network_name = azurerm_virtual_network.existing_vnet.name
+  resource_group_name  = data.azurerm_resource_group.existing_rg.name
+
+  service_endpoints = ["Microsoft.Storage"]
+}
+
 # Storage account with ADLS Gen2 integrated with the virtual network
 resource "azurerm_storage_account" "storage" {
   name                     = var.storage_account_name
