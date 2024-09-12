@@ -54,7 +54,7 @@ resource "azurerm_storage_account" "storage" {
   
   network_rules {
     default_action             = "Deny"  # Deny all by default
-    virtual_network_subnet_ids = [data.azurerm_subnet.existing_subnet.id]  # Allow access from the existing subnet
+    virtual_network_subnet_ids = [data.azurerm_subnet.updated_subnet.id]  # Allow access from the existing subnet
   }
 
   tags = data.azurerm_resource_group.existing_rg.tags
