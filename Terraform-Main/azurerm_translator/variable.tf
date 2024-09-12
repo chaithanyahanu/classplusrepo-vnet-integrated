@@ -1,7 +1,7 @@
 variable "translator_name" {
   description = "The name of the Translator cognitive service"
   type        = string
-  default     = "clstranslator456"
+  default     = "clstranslator789"
 }
 
 variable "sku_name" {
