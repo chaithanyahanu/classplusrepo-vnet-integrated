@@ -27,6 +27,9 @@ resource "azurerm_cognitive_account" "custom_vision" {
   kind                = "CustomVision.Prediction"
   sku_name            = "S0"
 
+  # Add a custom subdomain for private endpoint integration
+  custom_subdomain_name = "${var.cognitive_account_name}-subdomain"
+
   tags = data.azurerm_resource_group.existing_rg.tags
 }
 
@@ -37,6 +40,9 @@ resource "azurerm_cognitive_account" "custom_vision_training" {
   resource_group_name = data.azurerm_resource_group.existing_rg.name
   kind                = "CustomVision.Training"
   sku_name            = "S0"
+
+  # Add a custom subdomain for private endpoint integration
+  custom_subdomain_name = "${var.cognitive_account_name_training}-subdomain"
 
   tags = data.azurerm_resource_group.existing_rg.tags
 }
