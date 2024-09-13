@@ -44,4 +44,5 @@ resource "azurerm_cognitive_account" "translator" {
   }
 
   custom_subdomain_name = "custclsplusdomain"
+  public_network_access_enabled = false
 }
