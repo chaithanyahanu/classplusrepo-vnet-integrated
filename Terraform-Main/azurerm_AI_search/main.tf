@@ -14,7 +14,7 @@ data "azurerm_virtual_network" "existing_vnet" {
 
 # Use existing subnet
 data "azurerm_subnet" "existing_subnet" {
-  name                 = "subnet_1"
+  name                 = "subnet_2"
   virtual_network_name = data.azurerm_virtual_network.existing_vnet.name
   resource_group_name  = data.azurerm_resource_group.existing_rg.name
 }
@@ -22,8 +22,8 @@ data "azurerm_subnet" "existing_subnet" {
 # Define Azure Cognitive Search Service
 resource "azurerm_search_service" "example" {
   name                = var.search_service_name
-  resource_group_name = data.azurerm_resource_group.existing.name
-  location            = data.azurerm_resource_group.existing.location
+  resource_group_name = data.azurerm_resource_group.existing_rg.name
+  location            = data.azurerm_resource_group.existing_rg.location
   sku                 = "standard"
   replica_count   = var.replica_count
   partition_count = var.partition_count
