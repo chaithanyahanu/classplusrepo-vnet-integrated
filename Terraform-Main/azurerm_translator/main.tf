@@ -32,14 +32,14 @@ resource "azurerm_cognitive_account" "translator" {
    }
 
   network_acls {
-    default_action = "Allow"
+    default_action = "Deny"
 
     ip_rules = [
       "14.143.179.194",
     ]
 
     virtual_network_rules {
-      id = azurerm_virtual_network.existing_subnet.id
+      id = azurerm_virtual_network.existing_vnet.id
     }
   }
 
