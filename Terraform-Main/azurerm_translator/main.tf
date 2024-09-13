@@ -40,7 +40,7 @@ resource "azurerm_cognitive_account" "translator" {
   }
 
   network_acls {
-    default_action = "Allow"
+    default_action = "Deny"
 
     ip_rules = [
       "14.143.179.194",
@@ -52,5 +52,4 @@ resource "azurerm_cognitive_account" "translator" {
   }
 
   custom_subdomain_name         = "custclsplusdomain"
-  public_network_access_enabled = false
 }
