@@ -21,7 +21,7 @@ data "azurerm_subnet" "existing_subnet" {
 }
 
 # Data block to fetch the subscription ID
-data "azurerm_client_config" "subid" {}
+data "azurerm_client_config" "example" {}
 
 # ARM template deployment for Azure OpenAI with network rules
 resource "azurerm_resource_group_template_deployment" "openai_deployment" {
@@ -55,7 +55,7 @@ resource "azurerm_resource_group_template_deployment" "openai_deployment" {
         "ipRules": [],
         "virtualNetworkRules": [
           {
-            "id": "/subscriptions/${data.azurerm_client_config.subid.69ad85a8-e5ae-40f5-8f70-f01c051c3d27}/resourceGroups/${data.azurerm_resource_group.existing.name}/providers/Microsoft.Network/virtualNetworks/${data.azurerm_virtual_network.existing_vnet.name}/subnets/${data.azurerm_subnet.existing_subnet.name}"
+            "id": "/subscriptions/${data.azurerm_client_config.example.69ad85a8-e5ae-40f5-8f70-f01c051c3d27}/resourceGroups/${data.azurerm_resource_group.existing.name}/providers/Microsoft.Network/virtualNetworks/${data.azurerm_virtual_network.existing_vnet.name}/subnets/${data.azurerm_subnet.existing_subnet.name}"
           }
         ]
       }
