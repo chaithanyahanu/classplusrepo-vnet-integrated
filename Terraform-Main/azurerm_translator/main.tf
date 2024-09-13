@@ -1,7 +1,15 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "4.2.0"
+    }
+  }
+}
+
 provider "azurerm" {
   features {}
 }
-
 # Use existing resource group
 data "azurerm_resource_group" "existing_rg" {
   name = "classplus-prod-RG"
@@ -18,7 +26,7 @@ data "azurerm_subnet" "existing_subnet" {
   name                 = subnet_1
   virtual_network_name = data.azurerm_virtual_network.existing_vnet.name
   resource_group_name  = data.azurerm_resource_group.existing_rg.name
-
+}
 # Translator Cognitive Service
 resource "azurerm_cognitive_account" "translator" {
   name                = var.translator_name
@@ -29,7 +37,7 @@ resource "azurerm_cognitive_account" "translator" {
 
   identity {
     type = "SystemAssigned"
-   }
+  }
 
   network_acls {
     default_action = "Allow"
@@ -39,10 +47,10 @@ resource "azurerm_cognitive_account" "translator" {
     ]
 
     virtual_network_rules {
-      id = azurerm_virtual_network.existing_vnet.id
+      subnet_id = data.azurerm_subnet.existing_subnet.id
     }
   }
 
-  custom_subdomain_name = "custclsplusdomain"
+  custom_subdomain_name         = "custclsplusdomain"
   public_network_access_enabled = false
 }
