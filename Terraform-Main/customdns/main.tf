@@ -9,13 +9,13 @@ data "azurerm_resource_group" "existing_rg" {
 
 # Use existing virtual network
 data "azurerm_virtual_network" "existing_vnet" {
-  name                = Prod-vnet
+  name                = "Prod-vnet"
   resource_group_name = data.azurerm_resource_group.existing_rg.name
 }
 
 # Use existing subnet
 data "azurerm_subnet" "existing_subnet" {
-  name                 = subnet_1
+  name                 = "subnet_1"
   virtual_network_name = data.azurerm_virtual_network.existing_vnet.name
   resource_group_name  = data.azurerm_resource_group.existing_rg.name
 }
