@@ -38,7 +38,7 @@ resource "azurerm_cognitive_account" "custom_vision" {
     }
   }
 
-  custom_subdomain_name         = "custclsplusdomain"
+  custom_subdomain_name         = "customtr-Prediction-subdomain"
 }
 
 resource "azurerm_cognitive_account" "custom_vision_training" {
@@ -58,5 +58,5 @@ resource "azurerm_cognitive_account" "custom_vision_training" {
     }
   }
 
-  custom_subdomain_name         = "custclsplusdomain"
+  custom_subdomain_name         = "customtr-Training-subdomain"
   }
