@@ -34,5 +34,5 @@ resource "azurerm_subnet" "subnet" {
   address_prefixes     = each.value["address_prefixes"]
 
   # Enabling service endpoints for Microsoft.Storage
-  service_endpoints = ["Microsoft.Storage"]
+  service_endpoints = ["Microsoft.Storage", "Microsoft.CognitiveServices"]
 }
