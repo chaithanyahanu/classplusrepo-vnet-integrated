@@ -1,7 +1,7 @@
 variable "resourcegroup_name" {
   type        = string
   description = "The name of the resource group"
-  default     = "classplus-prod-RG-new"
+  default     = "classplus-prod-RG"
 }
 
 variable "location" {
