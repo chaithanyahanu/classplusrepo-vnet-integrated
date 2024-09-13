@@ -32,7 +32,7 @@ resource "azurerm_cognitive_account" "translator" {
    }
 
   network_acls {
-    default_action = "Deny"
+    default_action = "Allow"
 
     ip_rules = [
       "14.143.179.194",
