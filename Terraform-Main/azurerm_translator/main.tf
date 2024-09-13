@@ -32,10 +32,8 @@ resource "azurerm_cognitive_account" "translator" {
     type = "SystemAssigned"
   }
 
-  network_acls {
-    default_action = "Deny"
-    virtual_network_subnets_ids = [
-      data.azurerm_subnet.existing_subnet.id
-    ]
+  network_rules {
+    default_action             = "Deny"  # Deny all by default
+    virtual_network_subnet_ids = [data.azurerm_subnet.existing_subnet.id]  # Allow access from the existing subnet
   }
 }
