@@ -1,36 +1,26 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "3.110.0"
-    }
-  }
-  backend "azurerm" {}
-}
-
 provider "azurerm" {
   features {}
 }
 
-# Data block to reference the existing resource group
-data "azurerm_resource_group" "existing_rg" {
+# Data block to fetch the existing resource group
+data "azurerm_resource_group" "existing" {
   name = "classplus-prod-RG"
 }
 
-# Use existing virtual network
+# Data block to fetch the existing virtual network
 data "azurerm_virtual_network" "existing_vnet" {
   name                = "Prod-vnet"
-  resource_group_name = data.azurerm_resource_group.existing_rg.name
+  resource_group_name = data.azurerm_resource_group.existing.name
 }
 
-# Use existing subnet
+# Data block to fetch the existing subnet
 data "azurerm_subnet" "existing_subnet" {
-  name                 = "subnet_1"
+  name                 = "subnet_2"
   virtual_network_name = data.azurerm_virtual_network.existing_vnet.name
-  resource_group_name  = data.azurerm_resource_group.existing_rg.name
+  resource_group_name   = data.azurerm_resource_group.existing.name
 }
 
-# ARM template deployment for Azure OpenAI
+# ARM template deployment for Azure OpenAI with network rules
 resource "azurerm_resource_group_template_deployment" "openai_deployment" {
   name                = "openai-deployment"
   resource_group_name = data.azurerm_resource_group.existing.name
@@ -51,7 +41,20 @@ resource "azurerm_resource_group_template_deployment" "openai_deployment" {
         "name": "${var.sku_name}"
       },
       "properties": {
-        "publicNetworkAccess": "Disabled"
+        "publicNetworkAccess": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.CognitiveServices/accounts/networkAcls",
+      "apiVersion": "2021-03-01",
+      "name": "${var.openai_account_name}/networkAcls",
+      "properties": {
+        "ipRules": [],
+        "virtualNetworkRules": [
+          {
+            "id": "/subscriptions/${data.azurerm_virtual_network.existing_vnet.subscription_id}/resourceGroups/${data.azurerm_resource_group.existing.name}/providers/Microsoft.Network/virtualNetworks/${data.azurerm_virtual_network.existing_vnet.name}/subnets/${data.azurerm_subnet.existing_subnet.name}"
+          }
+        ]
       }
     }
   ]
@@ -59,15 +62,4 @@ resource "azurerm_resource_group_template_deployment" "openai_deployment" {
 TEMPLATE
 
   parameters_content = "{}"
-
-  network_acls {
-    default_action = "Deny"
-
-    virtual_network_rules {
-      subnet_id = data.azurerm_subnet.existing_subnet.id
-    }
-  }
-
-  custom_subdomain_name         = "clsopenai789-subdomain"
-  }
 }
