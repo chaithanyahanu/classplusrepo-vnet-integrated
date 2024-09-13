@@ -25,6 +25,7 @@ resource "azurerm_cognitive_account" "translator" {
   location            = data.azurerm_resource_group.existing_rg.location
   resource_group_name = data.azurerm_resource_group.existing_rg.name
   kind                = "TextTranslation"
+  public_network_access_enabled = false
   sku_name            = var.sku_name
 
   identity {
