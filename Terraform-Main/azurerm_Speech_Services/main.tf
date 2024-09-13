@@ -27,9 +27,9 @@ data "azurerm_subnet" "existing_subnet" {
   virtual_network_name = data.azurerm_virtual_network.existing_vnet.name
   resource_group_name  = data.azurerm_resource_group.existing_rg.name
 }
-# Translator Cognitive Service
-resource "azurerm_cognitive_account" "translator" {
-  name                = var.translator_name
+# SpeechService Cognitive Service
+resource "azurerm_cognitive_account" "speechservice" {
+  name                = var.speechservice
   location            = data.azurerm_resource_group.existing_rg.location
   resource_group_name = data.azurerm_resource_group.existing_rg.name
   kind                = "SpeechServices"
