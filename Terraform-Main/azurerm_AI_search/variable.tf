@@ -2,7 +2,7 @@
 variable "search_service_name" {
   description = "The name of the Azure Search Service"
   type        = string
-  default     = "classplsaisearch"
+  default     = ""
 }
 
 variable "replica_count" {
